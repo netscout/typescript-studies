@@ -1,0 +1,19 @@
+{
+  "name": "typescript-studies",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "examples": "npm run build && npm run examples:import-elision",
+    "examples:import-elision": "echo '=== Import Elision Examples ===' && node dist/import-elision/ex1-basic-elision.js && echo '' && node dist/import-elision/ex2-mixed-usage.js && echo '' && node dist/import-elision/ex3-type-only-imports.js && echo '' && node dist/import-elision/ex4-circular-dependencies.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "typescript": "^5.8.3"
+  }
+}
