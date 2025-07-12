@@ -36,7 +36,7 @@ timeline
     2009 : Node.js & CommonJS 등장. 서버사이드 JavaScript 시대
     2015 : ES6 & ESM 표준화. 공식 모듈 시스템 도입
     2020s : 현대적 도구들. Webpack, Vite, ESBuild
-    2022 : Node.js 22. require() ESM 지원
+    2024 : Node.js 22. require() ESM 지원
 ```
 
 그 후 CPU의 병렬 처리 능력 향상과 V8 엔진 등의 발전으로 Javascript가 처리할 수 있는 영역이 급속도로 넓어지면서 2009년에 Node.js가 발표되었고, Node.js가 2009년에 처음 발표될 때, CommonJS 모듈 시스템이 같이 공개되었습니다. 덩치가 큰 서버 어플리케이션을 만들 때는 필수적으로 코드를 여러 개의 모듈로 쪼개서 프로젝트를 구성해야 하는데 원래 Javascript에는 그런 개념이 없었기 때문이죠.
