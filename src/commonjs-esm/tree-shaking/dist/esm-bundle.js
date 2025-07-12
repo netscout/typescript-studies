@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("large-utils.mjs 로딩 중"),console.log("=== ESM Consumer ==="),console.log("large-utils.mjs에서 임포트 중..."),console.log("\nadd 함수만 사용:"),console.log("결과:",(console.log("add 함수 호출됨"),8)),console.log("\n주의: 'add' 함수만 임포트됩니다!"),console.log("다른 함수들은 이 모듈의 범위에 포함되지 않습니다.")})();

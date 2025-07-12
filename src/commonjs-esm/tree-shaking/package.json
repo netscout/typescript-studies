@@ -1,0 +1,16 @@
+{
+  "name": "tree-shaking-demo",
+  "version": "1.0.0",
+  "description": "Demonstrates tree-shaking differences between CommonJS and ESM",
+  "type": "module",
+  "scripts": {
+    "build": "webpack",
+    "test-commonjs": "node commonjs-consumer.js",
+    "test-esm": "node esm-consumer.mjs",
+    "test-esm-multiple": "node esm-consumer-multiple.mjs"
+  },
+  "devDependencies": {
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
