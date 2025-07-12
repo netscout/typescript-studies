@@ -34,8 +34,9 @@ timeline
     1995 : JavaScript 탄생. 브라우저 스크립트 언어
     2000s : 복잡한 웹 애플리케이션 등장. 모듈 시스템 부재로 인한 문제
     2009 : Node.js & CommonJS 등장. 서버사이드 JavaScript 시대
+    2014 : Webpack 등장. 모듈 번들러 시대
     2015 : ES6 & ESM 표준화. 공식 모듈 시스템 도입
-    2020s : 현대적 도구들. Webpack, Vite, ESBuild
+    2020s : 현대적 도구들. Vite, ESBuild
     2024 : Node.js 22. require() ESM 지원
 ```
 
