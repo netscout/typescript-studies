@@ -19,6 +19,7 @@
    - [require()ing Synchronous ESM Graphs](#requireing-synchronous-esm-graphs)
    - [제한사항](#제한사항)
    - [실습 예제](#nodejs-22-실습-예제)
+   - [실제 프로젝트 적용 사례](#실제-프로젝트-적용-사례)
 7. [참고자료](#참고자료)
 
 ---
@@ -922,6 +923,72 @@ async-math.mjs 로딩 중 (최상위 await가 있는 ESM)
 ```
 
 앞서 설명 드렸던 대로 top-level await를 사용하지 않는 ESM 모듈은 require()를 통해 임포트가 가능합니다. 하지만 top-level await를 사용하는 ESM 모듈은 require()로 임포트할 수 없으므로 async import를 사용해야 합니다.
+
+### 실제 프로젝트 적용 사례
+
+제가 개발 중 실제로 겪었던 사례를 소개해드리겠습니다.
+
+#### 🚨 문제 상황: ESM 전용 라이브러리 사용 시 require() 불가능
+
+기존 기능을 k8s 기반으로 전환하기 위해 프로토타이핑을 진행하고 있었습니다. 그런데 코드를 실행하자 다음과 같은 에러가 발생했습니다.
+
+```bash
+⠋  TSC  Initializing type checker.../dist/some/services/kubernetes-job.service.js:315
+                    mountPath: '/workspace'
+             ^
+
+Error [ERR_REQUIRE_ESM]: require() of ES Module /node_modules/@kubernetes/client-node/dist/index.js from /some/services/kubernetes-job.service.js not supported.
+Instead change the require of index.js in /dist/some/services/kubernetes-job.service.js to a dynamic import() which is available in all CommonJS modules.
+    at TracingChannel.traceSync (node:diagnostics_channel:315:14)
+    at Object.<anonymous> (/dist/some/services/kubernetes-job.service.js:12:61) {
+  code: 'ERR_REQUIRE_ESM'
+}
+```
+
+문제를 찾다보니, tsconfig.json 설정이 `"module": "commonjs"` 였고 [kubernetes-client 라이브러리가 1.0 버전 부터 ESM 전용으로 변경](https://github.com/kubernetes-client/javascript/releases/tag/1.0.0) 되었기 때문이었습니다! 게다가 node.js 버전 역시 22.11.0 이었습니다. require(esm)은 [node.js 22.12.0 부터 기본적으로 활성화](https://github.com/nodejs/node/releases/tag/v22.12.0) 되었으며, node.js 22.11.0 이하에서는 `--experimental-require-module` 플래그를 추가해야 합니다.
+
+#### 📋 상황 분석
+
+```mermaid
+graph TB
+    subgraph "문제 발생 환경"
+        A[TypeScript 프로젝트] --> B[tsconfig.json<br/>module: commonjs]
+        B --> C[빌드된 JS<br/>CommonJS 형태]
+        C --> D[kubernetes/client-node<br/>1.0.0+ ESM 전용]
+        D --> E[❌ ERR_REQUIRE_ESM]
+    end
+```
+
+```mermaid
+graph TB
+    subgraph "라이브러리 변경사항"
+        F[kubernetes/client-node 0.x] --> G[CommonJS 지원]
+        F --> H[kubernetes/client-node 1.0+] --> I[ESM 전용]
+        I --> J[require 불가능]
+    end
+```
+
+**핵심 문제:**
+
+- **TypeScript 설정**: `tsconfig.json`의 `module` 설정이 `"commonjs"`
+- **라이브러리 변경**: `@kubernetes/client-node` 1.0.0부터 ESM 전용 ([릴리즈 노트](https://github.com/kubernetes-client/javascript/releases/tag/1.0.0))
+- **Node.js 버전**: 개발 환경의 Node.js 22.11.0에서는 기본적으로 require(ESM) 미지원. `--experimental-require-module` 플래그를 추가해야 합니다.
+
+#### 💡 해결 방법
+
+일단 가장 간단한 해결책으로 다음과 같이 `--experimental-require-module` 플래그를 추가했습니다.
+
+```json
+// package.json
+{
+  "scripts": {
+    "start:dev": "NODE_OPTIONS='--experimental-require-module' nest start --watch",
+    "start:prod": "NODE_OPTIONS='--experimental-require-module' node dist/main.js"
+  }
+}
+```
+
+그리고 문제가 해결된 걸 확인하고, node.js 버전을 현재 최신 버전인 22.17.0 으로 업데이트 했습니다.
 
 ---
 
