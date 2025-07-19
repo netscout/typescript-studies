@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "erasableSyntaxOnly": true,
+    "outDir": "./dist"
+  }
+}
