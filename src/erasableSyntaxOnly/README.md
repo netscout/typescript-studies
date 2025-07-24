@@ -180,7 +180,7 @@ up
   }
   ```
 - `keyof typeof Direction`: 위 객체의 키들을 의미합니다. 즉, `"Up" | "Down" | "Left" | "Right"` 입니다.
-- `(typeof Direction)[keyof typeof Direction]`: 인덱스 타입을 의미하는데요, Direction 객체에서 사용가능한 모든 값을 유니온 타입으로 반환합니다. 즉, `"up" | "down" | "left" | "right"` 입니다.
+- `(typeof Direction)[keyof typeof Direction]`: 인덱스 엑세스 타입을 의미하는데요, Direction 객체에서 사용가능한 모든 값을 유니온 타입으로 반환합니다. 즉, `"up" | "down" | "left" | "right"` 입니다.
 
 조금 복잡해 보이긴 하지만, 이렇게 함으로써 다음과 같은 효과를 얻을 수 있습니다.
 
