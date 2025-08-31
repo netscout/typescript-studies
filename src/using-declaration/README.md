@@ -1,4 +1,4 @@
-# Typescript: Using 문
+# Typescript: Using 문으로 리소스 관리
 
 ## 목차
 
