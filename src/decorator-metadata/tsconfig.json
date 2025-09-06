@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["es2022", "esnext.decorators", "dom"],
+    "experimentalDecorators": false,
+    "useDefineForClassFields": true
+  }
+}
